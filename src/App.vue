@@ -1,74 +1,44 @@
 <template>
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-xs-12 col-md-6">
-        <div class="col-xs-6">
-          <h2 class="h3">
-            <div><small>Price:</small></div>
-            <div>{{ getPriceEntered }}</div>
-          </h2>
-        </div>
-        <div class="col-xs-6">
-          <h2 class="h3">
-            <div><small>Total:</small></div>
-            <div>{{ getRollingTotal }}</div>
-          </h2>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-xs-9 col-md-3">
-        <div class="btn-group btn-group-lg" role="group" aria-label="...">
-          <my-calculate-number-button value="7"></my-calculate-number-button>
-          <my-calculate-number-button value="8"></my-calculate-number-button>
-          <my-calculate-number-button value="9"></my-calculate-number-button>
-          <button type="button" value="+" v-on:click="setOperator($event)" class="btn btn-default">+</button>
-        </div>
-        <div class="btn-group btn-group-lg" role="group" aria-label="...">
-          <my-calculate-number-button value="4"></my-calculate-number-button>
-          <my-calculate-number-button value="5"></my-calculate-number-button>
-          <my-calculate-number-button value="6"></my-calculate-number-button>
-          <button type="button" value="-" v-on:click="setOperator($event)" class="btn btn-default">-</button>
-        </div>
-        <div class="btn-group btn-group-lg" role="group" aria-label="...">
-          <my-calculate-number-button value="1"></my-calculate-number-button>
-          <my-calculate-number-button value="2"></my-calculate-number-button>
-          <my-calculate-number-button value="3"></my-calculate-number-button>
-          <button type="button" class="btn btn-default">=</button>
-        </div>
-      </div>
-    </div>
-    {{ operatorClicked }}
-    <div v-for="(val) in prices">
-      {{val}}
+  <div class="container">
+    <my-calculator-display></my-calculator-display>
+    <div class="calc-grid">
+      <my-calculate-number-button value="7"></my-calculate-number-button>
+      <my-calculate-number-button value="8"></my-calculate-number-button>
+      <my-calculate-number-button value="9"></my-calculate-number-button>
+      <my-calculate-operator-button value="=" classname="eq">=</my-calculate-operator-button>
+      <my-calculate-number-button value="4"></my-calculate-number-button>
+      <my-calculate-number-button value="5"></my-calculate-number-button>
+      <my-calculate-number-button value="6"></my-calculate-number-button>
+      <my-calculate-operator-button value="-" classname="minus">-</my-calculate-operator-button>
+      <my-calculate-number-button value="1"></my-calculate-number-button>
+      <my-calculate-number-button value="2"></my-calculate-number-button>
+      <my-calculate-number-button value="3"></my-calculate-number-button>
+      <my-calculate-operator-button value="+" classname="add">+</my-calculate-operator-button>
+      <my-calculate-number-button value="0"></my-calculate-number-button>
     </div>
 
+    <div>
+      {{ operatorClicked }}
+      <div v-for="(val) in prices">
+        {{val}}
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-
+import CalculatorDisplay from './components/CalculatorDisplay'
 import CalculatorNumberButton from './components/CalculatorNumberButton'
-
-function formatCurrency (value) {
-  // convert pence to pounds
-  return '£' + ((Number(value / 100) || 0)
-    .toFixed(2)
-    .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,'))
-}
+import CalculatorOperatorButton from './components/CalculatorOperatorButton'
 
 export default {
   name: 'App',
-  components: {'my-calculate-number-button': CalculatorNumberButton},
-  computed: {
-    getPriceEntered: function () {
-      let value = this.clickedNumbers.join('') || 0;
-      return formatCurrency(value)
-    },
-    getRollingTotal: function () {
-      return formatCurrency(this.rollingTotal)
-    }
+  components: {
+    'my-calculator-display': CalculatorDisplay,
+    'my-calculate-number-button': CalculatorNumberButton,
+    'my-calculate-operator-button': CalculatorOperatorButton
   },
+
   data: function () {
     return {
       total: 0,
@@ -79,79 +49,57 @@ export default {
     }
   },
   methods: {
-    setOperator: function (event) {
-      let operation =  this.operatorClicked = event.target.value,
-        clickedNumbers = Number(this.clickedNumbers.join(''));
-
-      // Add the numbers to a stack
-      this.prices.push(clickedNumbers);
-
-      if (operation === '+') {
-        this.rollingTotal += clickedNumbers
-      }else if (operation === '-') {
-        this.rollingTotal -= clickedNumbers
-      }
-      this.clickedNumbers = []
-    },
     getTempTotal: function () {
       return this.clickedNumbers.join('') || 0
     }
   }
 }
-//
-
-//
-// new Vue({
-//   el: '#app',
-//   data: {
-//     total: 0,
-//     rollingTotal: 0,
-//     prices: [],
-//     operatorClicked:'',
-//     clickedNumbers: [],
-//   },
-//   computed: {
-//     total: 0
-//   },
-//   computed:{
-//     getPriceEntered: function(){
-//       var value = this.clickedNumbers.join('') || 0;
-//       return formatCurrency(value);
-//     },
-//     getRollingTotal: function(){
-//       return formatCurrency(this.rollingTotal);
-//     }
-//   },
-//   methods: {
-//     setOperator: function (event){
-//       var operation =  this.operatorClicked = event.target.value,
-//         clickedNumbers = Number(this.clickedNumbers.join(''));
-//
-//       //Add the numbers to a stack
-//       this.prices.push(clickedNumbers);
-//
-//       if (operation === "+"){
-//         this.rollingTotal += clickedNumbers
-//       }else if (operation === "-"){
-//         this.rollingTotal -= clickedNumbers
-//       }
-//       this.clickedNumbers = [];
-//     },
-//     getTempTotal: function(){
-//       return this.clickedNumbers.join('') || 0;
-//     }
-//   }
-// })
-
 </script>
 
-<style>
+<style lang="scss">
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  color: floralwhite;
   margin-top: 60px;
 }
+
+.container {
+  max-width: 750px;
+  min-width: 200px;
+}
+
+.calc-grid {
+  display: grid;
+  justify-content: center;
+  grid-template-columns: [cal-left] 1fr [cal-center] 1fr [cal-right] 1fr [operations] 1fr;
+  grid-template-rows: [top-row] 1fr [mid-1] 1fr [mid-2] 1fr [bottom] 1fr;
+  grid-gap: 10px;
+}
+
+.button {
+  background-color: darken(#9E5DAA,20%);
+  font-size: 3em;
+  font-weight: 100;
+  text-align: center;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 1em;
+  color: floralwhite;
+  letter-spacing: 2px;
+
+  &:hover{
+    background-color: lighten( #9E5DAA, 10%);
+    color: #000;
+    font-weight: bold;
+  }
+}
+
+.button-0 {
+  grid-column: 1 / span 3;
+}
+
 </style>
