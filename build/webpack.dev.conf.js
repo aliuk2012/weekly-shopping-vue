@@ -9,6 +9,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const portfinder = require('portfinder')
+const WebpackPwaManifest = require('webpack-pwa-manifest')
 
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
@@ -64,7 +65,26 @@ const devWebpackConfig = merge(baseWebpackConfig, {
         to: config.dev.assetsSubDirectory,
         ignore: ['.*']
       }
-    ])
+    ]),
+    //Generate manifest.json
+    new WebpackPwaManifest({
+      name: "Laings Weekly Shopping",
+      short_name: 'Shopping',
+      description: 'Shopping calculator and shopping list app',
+      display: "fullscreen",
+      background_color: '#240031',
+      theme_color: '#240031',
+      icons: [
+        {
+          src: path.resolve('src/assets/shopping.png'),
+          sizes: [96, 128, 192, 256, 384, 512] // multiple sizes
+        },
+        {
+          src: path.resolve('src/assets/shopping.png'),
+          size: '1024x1024' // you can also use the specifications pattern
+        }
+      ]
+    })
   ]
 })
 
