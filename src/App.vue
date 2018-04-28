@@ -5,21 +5,21 @@
       <my-calculate-number-button value="7"></my-calculate-number-button>
       <my-calculate-number-button value="8"></my-calculate-number-button>
       <my-calculate-number-button value="9"></my-calculate-number-button>
-      <my-calculate-operator-button value="=" classname="eq">=</my-calculate-operator-button>
+      <my-calculate-operator-button value="=" classname="eq" @userSetOperator="setOperator($event)">=</my-calculate-operator-button>
       <my-calculate-number-button value="4"></my-calculate-number-button>
       <my-calculate-number-button value="5"></my-calculate-number-button>
       <my-calculate-number-button value="6"></my-calculate-number-button>
-      <my-calculate-operator-button value="-" classname="minus">-</my-calculate-operator-button>
+      <my-calculate-operator-button value="-" classname="minus" @userSetOperator="setOperator($event)">-</my-calculate-operator-button>
       <my-calculate-number-button value="1"></my-calculate-number-button>
       <my-calculate-number-button value="2"></my-calculate-number-button>
       <my-calculate-number-button value="3"></my-calculate-number-button>
-      <my-calculate-operator-button value="+" classname="add">+</my-calculate-operator-button>
+      <my-calculate-operator-button value="+" classname="add" @userSetOperator="setOperator($event)">+</my-calculate-operator-button>
       <my-calculate-number-button value="0"></my-calculate-number-button>
     </div>
 
     <div>
       {{ operatorClicked }}
-      <div v-for="(val) in prices">
+      <div v-for="(val,index) in prices" v-bind:key="`price-${index}`">
         {{val}}
       </div>
     </div>
@@ -49,6 +49,31 @@ export default {
     }
   },
   methods: {
+    setOperator: function (value) {
+      let operation = value
+      let allClickedNumbers = Number(this.clickedNumbers.join(''))
+
+      if (operation !== '=') {
+        this.operatorClicked = value
+      }
+
+      // Add the numbers to a stack
+      this.prices.push(allClickedNumbers)
+
+      if (operation === '+') {
+        this.rollingTotal += allClickedNumbers
+      } else if (operation === '-') {
+        this.rollingTotal -= allClickedNumbers
+      } else if (operation === '=') {
+        if (this.operatorClicked === '+') {
+          this.rollingTotal += allClickedNumbers
+        } else if (this.operatorClicked === '-') {
+          this.rollingTotal -= allClickedNumbers
+        }
+        this.operatorClicked = ''
+      }
+      this.clickedNumbers = []
+    },
     getTempTotal: function () {
       return this.clickedNumbers.join('') || 0
     }

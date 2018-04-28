@@ -3,13 +3,18 @@
        class="button"
        role = "button"
        v-bind:class="getStyleClass(value)"
-       v-on:click="setOperator(value); getStyleClass(value)">
+       v-on:click="sendOperator(value);getStyleClass(value);">
     <slot></slot>
   </div>
 </template>
 
 <script>
 export default {
+  data: function () {
+    return {
+      userClick: {}
+    }
+  },
   props: {
     'classname': String,
     'value': String,
@@ -18,40 +23,16 @@ export default {
     'prices': Array
   },
   methods: {
-    setOperator: function (value) {
-      let operation = value,
-        clickedNumbers = Number(this.$parent.clickedNumbers.join(''));
-
-      if (operation !== '='){
-        this.$parent.operatorClicked = value;
-      }
-
-      // Add the numbers to a stack
-      this.$parent.prices.push(clickedNumbers);
-
-      if (operation === '+') {
-        this.$parent.rollingTotal += clickedNumbers
-      } else if (operation === '-') {
-        this.$parent.rollingTotal -= clickedNumbers
-      } else if (operation === '=') {
-        console.log('eq');
-        if (this.$parent.operatorClicked === '+') {
-          console.log('add');
-          this.$parent.rollingTotal += clickedNumbers;
-        } else if (this.$parent.operatorClicked === '-') {
-          console.log('minus');
-          this.$parent.rollingTotal -= clickedNumbers;
-        }
-        this.$parent.operatorClicked = '';
-      }
-      this.$parent.clickedNumbers = []
-    },
-
-    getStyleClass: function (operator){
+    getStyleClass: function (operator) {
+      console.log(this.$parent.operatorClicked)
+      console.log(operator !== '=')
       return {
-        'operator-selected': this.$parent.operatorClicked == operator && this.$parent.operatorClicked != "=",
+        'operator-selected': this.$parent.operatorClicked === operator && operator !== '=',
         'button-add': operator === '+'
       }
+    },
+    sendOperator: function (operator) {
+      this.$emit('userSetOperator', operator)
     }
   }
 }

@@ -23,8 +23,7 @@ export default {
   props: ['clickedNumbers', 'rollingTotal'],
   computed: {
     getPriceEntered: function () {
-      console.log(this);
-      let value = this.$parent.clickedNumbers.join('') || 0;
+      let value = this.$parent.clickedNumbers.join('') || 0
       return formatCurrency(value)
     },
     getRollingTotal: function () {
