@@ -76,12 +76,8 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       theme_color: '#240031',
       icons: [
         {
-          src: path.resolve('src/assets/shopping.png'),
-          sizes: [96, 128, 192, 256, 384, 512] // multiple sizes
-        },
-        {
-          src: path.resolve('src/assets/shopping.png'),
-          size: '1024x1024' // you can also use the specifications pattern
+          src: path.resolve('static/images/shopping-icon.png'),
+          sizes: [96, 128, 180, 192, 256, 384, 512] // multiple sizes
         }
       ]
     })
