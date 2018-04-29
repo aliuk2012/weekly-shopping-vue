@@ -24,8 +24,6 @@ export default {
   },
   methods: {
     getStyleClass: function (operator) {
-      console.log(this.$parent.operatorClicked)
-      console.log(operator !== '=')
       return {
         'operator-selected': this.$parent.operatorClicked === operator && operator !== '=',
         'button-add': operator === '+'

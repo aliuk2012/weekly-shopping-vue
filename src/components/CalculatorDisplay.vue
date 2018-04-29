@@ -1,10 +1,10 @@
 <template>
   <div class="calc-display">
-    <h2 class="h3">
+    <h2 class="h3" @click="clearTotals('price');">
       <small>Price:</small>
       <div>{{ getPriceEntered }}</div>
     </h2>
-    <h2 class="h3 h3--right-aligned">
+    <h2 class="h3 h3--right-aligned" @click="clearTotals('total');">
       <small>Total:</small>
       <div>{{ getRollingTotal }}</div>
     </h2>
@@ -29,7 +29,28 @@ export default {
     getRollingTotal: function () {
       return formatCurrency(this.$parent.rollingTotal)
     }
+  },
+  methods: {
+    clearTotals: function (clearValue) {
+      let confirmMsg = ''
+
+      if (clearValue === 'total') {
+        confirmMsg = 'Clear the totals?'
+      } else {
+        confirmMsg = 'Clear the values you entered?'
+      }
+
+      if (confirm(confirmMsg)) {
+        if (clearValue === 'total') {
+          this.$parent.prices = []
+          this.$parent.rollingTotal = 0
+        } else if (clearValue === 'price') {
+          this.$parent.clickedNumbers = []
+        }
+      }
+    }
   }
+
 }
 </script>
 
