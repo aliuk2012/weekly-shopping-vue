@@ -1,10 +1,10 @@
 <template>
   <div class="calc-display">
-    <h2 class="h3" @click="clearTotals('price');">
+    <h2 class="h3 h3--price" @click="clearTotals('price');">
       <small>Price:</small>
       <div>{{ getPriceEntered }}</div>
     </h2>
-    <h2 class="h3 h3--right-aligned" @click="clearTotals('total');">
+    <h2 class="h3 h3--total" @click="clearTotals('total');">
       <small>Total:</small>
       <div>{{ getRollingTotal }}</div>
     </h2>
@@ -64,8 +64,7 @@ export default {
   font-size: 1.5em;
 }
 
-.h3--right-aligned {
-
+.h3--total {
   text-align: right;
 }
 

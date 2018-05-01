@@ -26,7 +26,9 @@ export default {
     getStyleClass: function (operator) {
       return {
         'operator-selected': this.$parent.operatorClicked === operator && operator !== '=',
-        'button-add': operator === '+'
+        'button-add': operator === '+',
+        'button-minus': operator === '-',
+        'button-eq': operator === '='
       }
     },
     sendOperator: function (operator) {

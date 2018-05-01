@@ -5,15 +5,15 @@
       <my-calculate-number-button value="7"></my-calculate-number-button>
       <my-calculate-number-button value="8"></my-calculate-number-button>
       <my-calculate-number-button value="9"></my-calculate-number-button>
-      <my-calculate-operator-button value="=" classname="eq" @userSetOperator="setOperator($event)">=</my-calculate-operator-button>
+      <my-calculate-operator-button value="=" @userSetOperator="setOperator($event)">=</my-calculate-operator-button>
       <my-calculate-number-button value="4"></my-calculate-number-button>
       <my-calculate-number-button value="5"></my-calculate-number-button>
       <my-calculate-number-button value="6"></my-calculate-number-button>
-      <my-calculate-operator-button value="-" classname="minus" @userSetOperator="setOperator($event)">-</my-calculate-operator-button>
+      <my-calculate-operator-button value="-" @userSetOperator="setOperator($event)">-</my-calculate-operator-button>
       <my-calculate-number-button value="1"></my-calculate-number-button>
       <my-calculate-number-button value="2"></my-calculate-number-button>
       <my-calculate-number-button value="3"></my-calculate-number-button>
-      <my-calculate-operator-button value="+" classname="add" @userSetOperator="setOperator($event)">+</my-calculate-operator-button>
+      <my-calculate-operator-button value="+" @userSetOperator="setOperator($event)">+</my-calculate-operator-button>
       <my-calculate-number-button value="0"></my-calculate-number-button>
     </div>
 
@@ -51,31 +51,50 @@ export default {
   methods: {
     setOperator: function (value) {
       let operation = value
-      let allClickedNumbers = Number(this.clickedNumbers.join(''))
+      let newPrice = Number(this.clickedNumbers.join(''))
 
-      if (operation !== '=') {
-        this.operatorClicked = value
+      // if first operation default to positive number
+      if (this.operatorClicked === '') {
+        this.operatorClicked = '+'
       }
 
-      // Add the numbers to a stack
-      this.prices.push(allClickedNumbers)
-
-      if (operation === '+') {
-        this.rollingTotal += allClickedNumbers
-      } else if (operation === '-') {
-        this.rollingTotal -= allClickedNumbers
-      } else if (operation === '=') {
-        if (this.operatorClicked === '+') {
-          this.rollingTotal += allClickedNumbers
-        } else if (this.operatorClicked === '-') {
-          this.rollingTotal -= allClickedNumbers
+      // Adding
+      if (this.operatorClicked === '+') {
+        this.rollingTotal = this.addPrice(newPrice)
+        // Add only if there is a price
+        if (newPrice !== 0) {
+          this.prices.push(newPrice)
         }
+      }
+
+      // Subtracting
+      if (this.operatorClicked === '-') {
+        this.rollingTotal = this.subtractPrice(newPrice)
+        // Add only if there is a price
+        if (newPrice !== 0) {
+          this.prices.push(newPrice * -1)
+        }
+      }
+
+      // Set previously clicked operator if its not '='
+      if (operation !== '=') {
+        this.operatorClicked = operation
+      } else {
         this.operatorClicked = ''
       }
-      this.clickedNumbers = []
+      this.clearPrice()
     },
     getTempTotal: function () {
       return this.clickedNumbers.join('') || 0
+    },
+    addPrice: function (newPrice) {
+      return this.rollingTotal + newPrice
+    },
+    subtractPrice: function (newPrice) {
+      return this.rollingTotal - newPrice
+    },
+    clearPrice: function () {
+      this.clickedNumbers = []
     }
   }
 }
