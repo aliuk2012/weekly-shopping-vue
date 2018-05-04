@@ -57,6 +57,13 @@
     </style>
   </head>
   <body>
+    <script>
+      (function() {
+        if('serviceWorker' in navigator) {
+          navigator.serviceWorker.register('/service-worker.js');
+        }
+        })();
+    </script>
     <div id="app"></div>
     <!-- built files will be auto injected -->
   </body>
