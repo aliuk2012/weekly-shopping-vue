@@ -1,6 +1,9 @@
 <template>
   <div class="container">
-    <my-calculator-display></my-calculator-display>
+    <my-calculator-display :price="getPrice()"
+                           @clearPrice="clearPrice()"
+                           :total="getTotal()"
+                           @clearTotal="clearTotal()"></my-calculator-display>
     <div class="calc-grid">
       <my-calculate-number-button value="7"></my-calculate-number-button>
       <my-calculate-number-button value="8"></my-calculate-number-button>
@@ -18,10 +21,11 @@
     </div>
 
     <div>
-      {{ operatorClicked }}
-      <div v-for="(val,index) in prices" v-bind:key="`price-${index}`">
-        {{val}}
-      </div>
+      <ul>
+        <li v-for="(val,index) in prices" v-bind:key="`price-${index}`">
+          {{ val | formatCurrency }}
+        </li>
+      </ul>
     </div>
   </div>
 </template>
@@ -84,8 +88,8 @@ export default {
       }
       this.clearPrice()
     },
-    getTempTotal: function () {
-      return this.clickedNumbers.join('') || 0
+    getPrice: function () {
+      return Number(this.clickedNumbers.join('')) || 0
     },
     addPrice: function (newPrice) {
       return this.rollingTotal + newPrice
@@ -95,6 +99,13 @@ export default {
     },
     clearPrice: function () {
       this.clickedNumbers = []
+    },
+    getTotal: function () {
+      return this.rollingTotal
+    },
+    clearTotal: function () {
+      this.prices = []
+      this.rollingTotal = 0
     }
   }
 }
@@ -145,5 +156,17 @@ export default {
 .button-0 {
   grid-column: 1 / span 3;
 }
+
+  ul {
+    display: grid;
+    grid-template-columns: repeat(5,1fr);
+    grid-gap: 10px;
+    list-style-type: none;
+    padding: 0;
+  }
+  ul li {
+    font-size: 2em;
+    letter-spacing: 1px;
+  }
 
 </style>

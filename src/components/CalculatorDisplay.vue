@@ -1,52 +1,38 @@
 <template>
   <div class="calc-display">
-    <h2 class="h3 h3--price" @click="clearTotals('price');">
+    <h2 class="h3 h3--price" @click="promptClearPrice();">
       <small>Price:</small>
-      <div>{{ getPriceEntered }}</div>
+      <div>{{ price | formatCurrency }}</div>
     </h2>
-    <h2 class="h3 h3--total" @click="clearTotals('total');">
+    <h2 class="h3 h3--total" @click="promptClearTotals();">
       <small>Total:</small>
-      <div>{{ getRollingTotal }}</div>
+      <div>{{ total | formatCurrency }}</div>
     </h2>
   </div>
 </template>
 
 <script>
-function formatCurrency (value) {
-  // convert pence to pounds
-  return '£' + ((Number(value / 100) || 0)
-    .toFixed(2)
-    .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,'))
-}
 
 export default {
-  props: ['clickedNumbers', 'rollingTotal'],
-  computed: {
-    getPriceEntered: function () {
-      let value = this.$parent.clickedNumbers.join('') || 0
-      return formatCurrency(value)
+  props: {
+    price: {
+      type: Number,
+      required: true
     },
-    getRollingTotal: function () {
-      return formatCurrency(this.$parent.rollingTotal)
+    total: {
+      type: Number,
+      required: true
     }
   },
   methods: {
-    clearTotals: function (clearValue) {
-      let confirmMsg = ''
-
-      if (clearValue === 'total') {
-        confirmMsg = 'Clear the totals?'
-      } else {
-        confirmMsg = 'Clear the values you entered?'
+    promptClearPrice: function () {
+      if (confirm('Clear the values you entered?')) {
+        this.$emit('clearPrice')
       }
-
-      if (confirm(confirmMsg)) {
-        if (clearValue === 'total') {
-          this.$parent.prices = []
-          this.$parent.rollingTotal = 0
-        } else if (clearValue === 'price') {
-          this.$parent.clickedNumbers = []
-        }
+    },
+    promptClearTotals: function (clearValue) {
+      if (confirm('Clear the totals?')) {
+        this.$emit('clearTotal')
       }
     }
   }
