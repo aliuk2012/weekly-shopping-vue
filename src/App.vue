@@ -107,6 +107,26 @@ export default {
       this.prices = []
       this.rollingTotal = 0
     }
+  },
+  mounted: function () {
+    let prices = JSON.parse(this.$ls.get('prices'))
+    let rollingTotal = JSON.parse(this.$ls.get('rollingTotal'))
+
+    if (prices) {
+      this.prices = prices
+    }
+
+    if (rollingTotal) {
+      this.rollingTotal = rollingTotal
+    }
+  },
+  watch: {
+    prices: function () {
+      this.$ls.set('prices', JSON.stringify(this.prices))
+    },
+    rollingTotal: function () {
+      this.$ls.set('rollingTotal', JSON.stringify(this.rollingTotal))
+    }
   }
 }
 </script>
