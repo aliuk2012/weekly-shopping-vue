@@ -3,6 +3,12 @@
 import Vue from 'vue'
 import App from './App'
 import formatCurrency from './filters/formatCurrency'
+import VueLocalStorage from 'vue-localstorage'
+
+Vue.use(VueLocalStorage, {
+  name: 'ls'
+  // bind: true //created computed members from your variable declarations
+})
 
 Vue.config.productionTip = false
 
