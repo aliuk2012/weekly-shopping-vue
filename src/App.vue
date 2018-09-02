@@ -157,6 +157,7 @@ export default {
 
 .button {
   background-color: darken(#9E5DAA,20%);
+  border: 1px solid darken(#9E5DAA,20%);
   font-size: 3em;
   font-weight: 100;
   text-align: center;
@@ -168,6 +169,7 @@ export default {
 
   &:hover{
     background-color: lighten( #9E5DAA, 10%);
+    border: 1px solid lighten( #9E5DAA, 10%);
     color: #000;
     font-weight: bold;
   }
