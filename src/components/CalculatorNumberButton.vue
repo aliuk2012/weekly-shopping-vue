@@ -3,12 +3,12 @@
           <!--v-bind:value="value"-->
           <!--v-on:click="digitClicked($event)"-->
           <!--class="btn btn-default">{{ value }}</button>-->
-  <div type="button"
+  <button type="button"
        class="button"
        v-on:click="digitClicked(value)"
        v-bind:class="['button-' + value]">
     {{ value }}
-  </div>
+  </button>
 </template>
 
 <script>

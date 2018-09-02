@@ -1,11 +1,11 @@
 <template>
-  <div type="button"
+  <button type="button"
        class="button"
        role = "button"
        v-bind:class="getStyleClass(value)"
        v-on:click="sendOperator(value);getStyleClass(value);">
     <slot></slot>
-  </div>
+  </button>
 </template>
 
 <script>
