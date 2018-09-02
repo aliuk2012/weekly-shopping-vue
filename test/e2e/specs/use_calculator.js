@@ -14,7 +14,7 @@ module.exports = {
       .assert.elementPresent('.calc-display')
       .assert.elementPresent('.calc-grid')
   },
-  'using the calculator - adding two numbers': function(browser) {
+  'using the calculator - adding two numbers': function (browser) {
     const devServer = browser.globals.devServerURL
 
     browser
@@ -40,12 +40,15 @@ module.exports = {
       .assert.cssClassNotPresent('.button-eq', 'operator-selected')
       .assert.containsText('.calc-display .h3--price div', '£0.00')
   },
-  'using the calculator - subtract two numbers': function(browser) {
+  'using the calculator - subtract two numbers': function (browser) {
     const devServer = browser.globals.devServerURL
 
     browser
       .url(devServer)
       .waitForElementVisible('body', 5000)
+      .click('.h3--total')
+      .pause(500)
+      .acceptAlert()
       .click('.button-5')
       .click('.button-6')
       .click('.button-7')
