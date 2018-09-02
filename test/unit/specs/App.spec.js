@@ -2,12 +2,16 @@
 import Vue from 'vue'
 import formatToCurrency from '@/filters/formatCurrency'
 import App from '@/App'
+import VueLocalStorage from 'vue-localstorage'
 
 let vm
 
 describe('App', () => {
   function setVm (Component, propsData) {
     Vue.filter('formatCurrency', formatToCurrency.formatCurrency)
+    Vue.use(VueLocalStorage, {
+      name: 'ls'
+    })
     const Constructor = Vue.extend(Component)
     vm = new Constructor({ propsData: propsData }).$mount()
   }
@@ -140,7 +144,7 @@ describe('App', () => {
         vm.setOperator('+')
         expect(spy.calledOnce).to.be.true
         expect(resetSpy.calledOnce).to.be.true
-        expect(vm.prices).to.equal[1234]
+        expect(vm.prices).to.deep.equal([1234])
         expect(vm.operatorClicked).to.equal('+')
       })
     })
@@ -155,7 +159,7 @@ describe('App', () => {
         vm.setOperator('-')
         expect(spy.calledOnce).to.be.true
         expect(resetSpy.calledOnce).to.be.true
-        expect(vm.prices).to.equal[1234]
+        expect(vm.prices).to.deep.equal([-1234])
         expect(vm.operatorClicked).to.equal('-')
       })
     })
@@ -170,7 +174,7 @@ describe('App', () => {
         vm.setOperator('=')
         expect(spy.calledOnce).to.be.true
         expect(resetSpy.calledOnce).to.be.true
-        expect(vm.prices).to.equal[1234]
+        expect(vm.prices).to.deep.equal([1234])
         expect(vm.operatorClicked).to.equal('')
       })
 
@@ -184,7 +188,7 @@ describe('App', () => {
           vm.setOperator('=')
           expect(spy.calledOnce).to.be.true
           expect(resetSpy.calledOnce).to.be.true
-          expect(vm.prices).to.eql[1234]
+          expect(vm.prices).to.deep.equal([-1234])
           expect(vm.operatorClicked).to.equal('')
         })
       })
