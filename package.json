@@ -95,7 +95,7 @@
     "webpack-pwa-manifest": "^3.6.2"
   },
   "engines": {
-    "node": ">= 6.0.0",
+    "node": ">= 9.0.0",
     "npm": ">= 3.0.0"
   },
   "browserslist": [
